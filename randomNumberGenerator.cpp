@@ -1,4 +1,4 @@
-#include "RandomNumberGenerator.h"
+#include "randomNumberGenerator.h"
 
 RandomNumberGenerator::RandomNumberGenerator(std::string rFileName) {
     std::ifstream file(rFileName);
@@ -30,10 +30,10 @@ RandomNumberGenerator::~RandomNumberGenerator() {
     delete [] this->fileArray;
 }
 
-int RandomNumberGenerator::get(int burst) {
+int RandomNumberGenerator::get(int num) {
     this->ofs++;
     if(this->ofs == this->fileNumCount - 1) {
         this->ofs = 1;
     }
-    return 1 + (this->fileArray[this->ofs - 1] % burst);
+    return 1 + (this->fileArray[this->ofs - 1] % num);
 }
