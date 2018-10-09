@@ -1,26 +1,32 @@
 #ifndef PROCESS_H
 #define PROCESS_H
 
-#define CREATED 0
-#define READY 1
-#define BLOCKED 2
-#define RUNNING 3
+typedef enum {
+	CREATED,
+	READY,
+	BLOCKED,
+	RUNNING,
+} State;
 
 class Process {
 
     public:
 
-        Process(int AT_, int TC_, int CB_, int IO_, int prio);
-        void changeState(int newState);
+        Process(int PID_, int AT_, int TC_, int CB_, int IO_, int prio);
+        void changeState(State newState);
         void print();
 
     private:
+    	int PID;
         int AT;
         int TC;
         int CB;
         int IO;
         int priority;
-        int state;
+        State state;
+        int FT;
+        int IT;
+        int CW;
 };
 
 #endif

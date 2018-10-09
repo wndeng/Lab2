@@ -6,25 +6,33 @@
 #include <sstream>
 #include "randomNumberGenerator.h"
 #include "process.h"
-#include "scheduler.h"
+#include "event.h"
 
-#define FCFS 0
-#define LCFS 1
-#define SRTF 2
-#define RR 3
-#define PRIO 4
-#define PREPRIO 5
+typedef enum {
+	FCFS,
+	LCFS,
+	SRTF,
+	RR,
+	PRIO,
+	PREPRIO,
+} schedulingALgorithm;
 
 class Scheduler {
 	public:
 		Scheduler(int algo, std::string fileName, std::string rFileName);
 		Process* getProcess();
+		virtual Event* getNextEvent() = 0;
+		void processEvent(Event* event);
+		void simulate();
+		int nextProcessTime();
 
 	private:
 		int algorithm;
 		std::ifstream file;
 		RandomNumberGenerator rng;
-
+		int processCount;
+		int currentTime;
+		std::string currentLine;
 };
 
 #endif
