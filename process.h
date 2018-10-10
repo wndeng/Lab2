@@ -15,8 +15,6 @@ class Process {
         Process(int PID_, int AT_, int TC_, int CB_, int IO_, int prio);
         void changeState(State newState);
         void print();
-
-    private:
     	int PID;
         int AT;
         int TC;

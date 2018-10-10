@@ -3,6 +3,9 @@
 Fcfs::Fcfs(int algo, std::string fileName, std::string rFileName): Scheduler(algo, fileName, rFileName) {};
 
 Event* Fcfs::getNextEvent() {
-	Event *event = new Event(this->processQueue.front(), READY_TO_RUNNING);
-	return event;
+	return NULL;
+}
+
+void Fcfs::printEvent(Event *event) {
+	std::cout << event->timeStamp << " " << event->process->PID << " " << event->timeDiff << " " << event->trans << " " << std::endl;
 }

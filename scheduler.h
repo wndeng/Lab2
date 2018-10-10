@@ -7,6 +7,7 @@
 #include "randomNumberGenerator.h"
 #include "process.h"
 #include "event.h"
+#include <queue>
 
 typedef enum {
 	FCFS,
@@ -15,24 +16,31 @@ typedef enum {
 	RR,
 	PRIO,
 	PREPRIO,
-} schedulingALgorithm;
+} algo;
+
+struct EventCompare {
+	bool operator()(Event*& lhs, Event*& rhs) {
+		if(lhs->timeStamp < rhs->timeStamp) {
+			return false;
+		}
+		return true;
+	}
+
+};
 
 class Scheduler {
 	public:
 		Scheduler(int algo, std::string fileName, std::string rFileName);
-		Process* getProcess();
 		virtual Event* getNextEvent() = 0;
 		void processEvent(Event* event);
 		void simulate();
 		int nextProcessTime();
-
-	private:
 		int algorithm;
 		std::ifstream file;
 		RandomNumberGenerator rng;
-		int processCount;
 		int currentTime;
-		std::string currentLine;
+		std::priority_queue<Event*, std::vector<Event*>, EventCompare> eventQueue; 
+
 };
 
 #endif

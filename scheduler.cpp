@@ -1,24 +1,17 @@
 #include "scheduler.h"
 
-Scheduler::Scheduler(int algo, std::string fileName, std::string rFileName): algorithm(algo), file(fileName), rng(rFileName), processCount(1), currentTime(0), currentLine("") {
+Scheduler::Scheduler(int algo, std::string fileName, std::string rFileName): algorithm(algo), file(fileName), rng(rFileName), currentTime(0) {
 	if(!this->file.is_open()) {
 		std::cout << "file not found!" << std::endl;
 		exit(EXIT_FAILURE);
 	}
-	if(!std::getline(this->file, this->currentLine)) {
-		std::cout << "file error!";
-		exit(EXIT_FAILURE);
-	}
-}
 
-Process* Scheduler::getProcess() {
-	if(this->currentLine == "") {
-		return NULL;
-	}
-	else {
-		std::stringstream ss;
-		ss << this->currentLine;
-		std::string num;
+	std::string line, num;
+	std::stringstream ss;
+	int processCount = 1;
+
+	while(getline(this->file, line)) {
+		ss << line;
 		ss >> num;
 		int AT = std::stoi(num);
 		ss >> num;
@@ -28,26 +21,23 @@ Process* Scheduler::getProcess() {
 		ss >> num;
 		int IO = std::stoi(num);
 		int priority = this->rng.get(4);
-		Process *process = new Process(this->processCount, AT, TC, CB, IO, priority);
-		this->processCount++;
-		getline(this->file, this->currentLine);
-		return process;
-	}
-}
+		Process *process = new Process(processCount, AT, TC, CB, IO, priority);
+		processCount++;
 
-int Scheduler::nextProcessTime() {
-	std::stringstream ss;
-	ss << this->currentLine;
-	std::string num;
-	ss >> num;
-	return std::stoi(num);
+		Event *event = new Event(process, CREATED_TO_READY, process->AT, 0);
+		this->eventQueue.push(event);
+	}
+
 }
 
 void Scheduler::simulate() {
-	Event *event;
-	while((event = this->getNextEvent())) {
-		this->processEvent(event);
-	}
+	// Event *event;
+	// while((event = this->getNextEvent())) {
+	// 	this->processEvent(event);
+	// }
+	// Event *event = this->getNextEvent();
+	// this->processEvent(event);
+
 }
 
 void Scheduler::processEvent(Event *event) {
