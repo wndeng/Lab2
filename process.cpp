@@ -5,10 +5,14 @@
 
 static const int debug = 0;
 
-Process::Process(int PID_, int AT_, int TC_, int CB_, int IO_, int prio): PID(PID_), AT(AT_), TC(TC_),  CB(CB_), IO(IO_), priority(prio), state(CREATED), FT(AT_), IT(0), CW(0) {};
+Process::Process(int PID_, int AT_, int TC_, int CB_, int IO_, int prio): PID(PID_), AT(AT_), TC(TC_),  CB(CB_), IO(IO_), priority(prio-1), state(CREATED), FT(AT_), IT(0), CW(0), static_priority(prio), stateStartTime(AT), rem(TC_) {};
 
-void Process::changeState(State newState) {
+void Process::changeState(State newState, int newTime) {
+	if(newState == BLOCKED) {
+		this->rem -= (newTime - this->stateStartTime);
+	}
 	 this->state = newState;
+	 this->stateStartTime = newTime;
 }
 
 void Process::print() {

@@ -13,7 +13,7 @@ class Process {
     public:
 
         Process(int PID_, int AT_, int TC_, int CB_, int IO_, int prio);
-        void changeState(State newState);
+        void changeState(State newState, int newTime);
         void print();
     	int PID;
         int AT;
@@ -25,6 +25,9 @@ class Process {
         int FT;
         int IT;
         int CW;
+        int static_priority;
+        int stateStartTime;
+        int rem;
 };
 
 #endif

@@ -4,18 +4,20 @@
 #include "process.h"
 
 typedef enum {
-	CREATED_TO_READY,
-	READY_TO_BLOCKED,
-	BLOCKED_TO_READY,
-	READY_TO_RUNNING,
+	TO_READY,
+	TO_PREEMPT,
+	TO_RUNNING,
+	TO_BLOCK,
 } Trans;
 
 struct Event {
-	Event(Process *process_, Trans trans_, int time, int timePrev): process(process_), trans(trans_), timeStamp(time), timeDiff(timePrev) {};
+	Event(Process *process_, Trans trans_, int time, int timePrev, int order_): process(process_), trans(trans_), timeStamp(time), timeDiff(timePrev), prevState(process_->state), order(order_) {};
 	Process *process;
 	Trans trans;
 	int timeStamp;
 	int timeDiff;
+	State prevState;
+	int order;
 };
 
 #endif

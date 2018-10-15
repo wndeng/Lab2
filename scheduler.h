@@ -23,6 +23,9 @@ struct EventCompare {
 		if(lhs->timeStamp < rhs->timeStamp) {
 			return false;
 		}
+		if(lhs->timeStamp == rhs->timeStamp) {
+			return lhs->order > rhs->order;
+		}
 		return true;
 	}
 
@@ -31,16 +34,19 @@ struct EventCompare {
 class Scheduler {
 	public:
 		Scheduler(int algo, std::string fileName, std::string rFileName);
-		virtual Event* getNextEvent() = 0;
-		void processEvent(Event* event);
+		Event* getNextEvent();
+		virtual void schedule(Process *process, int time) = 0;
+		void printEvent(Event *event);
 		void simulate();
 		int nextProcessTime();
+		void block(Process *process, int time);
+		void ready(Process *process, int time);
+		void virtual requestLoad(int time) = 0;
 		int algorithm;
 		std::ifstream file;
 		RandomNumberGenerator rng;
-		int currentTime;
-		std::priority_queue<Event*, std::vector<Event*>, EventCompare> eventQueue; 
-
+		std::priority_queue<Event*, std::deque<Event*>, EventCompare> eventQueue; 
+		int eventOrder;
 };
 
 #endif

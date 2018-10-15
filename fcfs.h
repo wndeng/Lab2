@@ -8,9 +8,9 @@
 class Fcfs: public Scheduler {
 	public:
 		Fcfs(int algo, std::string fileName, std::string rFileName);
-		Event* getNextEvent();
-		void printEvent(Event *event);
-		std::priority_queue <Process*> processQueue;
+		void schedule(Process *process, int time);
+		void requestLoad(int time);
+		std::queue <Process*> runQueue;
 };
 
 #endif
