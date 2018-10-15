@@ -28,6 +28,7 @@ class Process {
         int static_priority;
         int stateStartTime;
         int rem;
+        bool ioFlag;
 };
 
 #endif

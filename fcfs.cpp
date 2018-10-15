@@ -1,15 +1,17 @@
 #include "fcfs.h"
 
-Fcfs::Fcfs(int algo, std::string fileName, std::string rFileName): Scheduler(algo, fileName, rFileName) {};
+Fcfs::Fcfs(int algo, std::string fileName, std::string rFileName): Scheduler(algo, fileName, rFileName) {
+	std::cout << "FCFS" << std::endl;
+};
 
 void Fcfs::schedule(Process *process, int time) {
 	process->changeState(READY, time);
 	this->runQueue.push(process);
 }
 
-void Fcfs::requestLoad(int time) {
+Process* Fcfs::requestLoad(int time) {
 	if(runQueue.empty()) {
-		return;
+		return NULL;
 	}
 	Process *process = this->runQueue.front();
 	this->runQueue.pop();
@@ -17,6 +19,5 @@ void Fcfs::requestLoad(int time) {
 	Event *event = new Event(process, TO_RUNNING, time, timeDiff, this->eventOrder);
 	this->eventQueue.push(event);
 	this->eventOrder++;
-
-
+	return process;
 }

@@ -1,13 +1,15 @@
 #ifndef SCHEDULER_H
 #define SCHEDULER_H
 
+#include <iomanip>
 #include <string>
 #include <fstream>
 #include <sstream>
+#include <queue>
+#include <list>
 #include "randomNumberGenerator.h"
 #include "process.h"
 #include "event.h"
-#include <queue>
 
 typedef enum {
 	FCFS,
@@ -41,12 +43,20 @@ class Scheduler {
 		int nextProcessTime();
 		void block(Process *process, int time);
 		void ready(Process *process, int time);
-		void virtual requestLoad(int time) = 0;
+		void setDebug();
+		virtual Process* requestLoad(int time) = 0;
+		void printSummary();
 		int algorithm;
 		std::ifstream file;
 		RandomNumberGenerator rng;
-		std::priority_queue<Event*, std::deque<Event*>, EventCompare> eventQueue; 
+		std::priority_queue<Event*, std::deque<Event*>, EventCompare> eventQueue;
+		std::list<Process*> processList;
 		int eventOrder;
+		int ioTime;
+		int ioStart;
+		int ioEnd;
+		int cpuTime;
+		bool debug;
 };
 
 #endif
