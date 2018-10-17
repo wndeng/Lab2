@@ -129,8 +129,11 @@ void Scheduler::simulate() {
 				//this->stop(currentProcess, currentTime);
 				break;
 		}
+		if(!this->eventQueue.empty() && this->eventQueue.top()->timeStamp == currentTime) {
+			continue;
+		}
 
-		if(currentProcess == NULL) {
+		else if(currentProcess == NULL) {
 			currentProcess = this->requestLoad(currentTime);
 		}
 
@@ -196,7 +199,7 @@ void Scheduler::printSummary() {
 		else if(process->PID < 1000) {
 			str += "0";
 		}
-		std::cout << str << process->PID << ": " << std::setw(4) << process->AT << " " << std::setw(4) << process->TC << " " << std::setw(4) << process->CB << " " << std::setw(4) << process->IO << " " << std::setw(4) << process->static_priority << " | ";
+		std::cout << str << process->PID << ": " << std::setw(4) << process->AT << " " << std::setw(4) << process->TC << " " << std::setw(4) << process->CB << " " << std::setw(4) << process->IO << " " << std::setw(1) << process->static_priority << " | ";
 		std::cout << std::setw(5) << process->FT << " " << std::setw(5) << (process->FT - process->AT) << " " << std::setw(5) << process->IT << " " << std::setw(5) << process->CW << std::endl;
 		delete [] process;
 		process = NULL;
