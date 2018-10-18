@@ -1,6 +1,6 @@
 #include "lcfs.h"
 
-Lcfs::Lcfs(int algo, std::string fileName, std::string rFileName): Scheduler(algo, fileName, rFileName) {
+Lcfs::Lcfs(int algo, std::string fileName, std::string rFileName, int quantum): Scheduler(algo, fileName, rFileName, quantum) {
 	std::cout << "LCFS" << std::endl;
 };
 

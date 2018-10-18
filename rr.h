@@ -1,13 +1,13 @@
-#ifndef FCFS_H
-#define FCFS_H
+#ifndef RR_H
+#define RR_H
 #include <iostream>
 #include <queue>
 #include "scheduler.h"
 #include "process.h"
 
-class Fcfs: public Scheduler {
+class Rr: public Scheduler {
 	public:
-		Fcfs(int algo, std::string fileName, std::string rFileName, int quantum);
+		Rr(int algo, std::string fileName, std::string rFileName, int quantum);
 		void schedule(Process *process, int time);
 		Process* requestLoad(int time);
 		std::queue <Process*> runQueue;

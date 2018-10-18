@@ -19,7 +19,7 @@ struct RemCompare {
 
 class Srtf: public Scheduler {
 	public:
-		Srtf(int algo, std::string fileName, std::string rFileName);
+		Srtf(int algo, std::string fileName, std::string rFileName, int quantum);
 		void schedule(Process *process, int time);
 		Process* requestLoad(int time);
 		std::priority_queue <Process*, std::deque<Process*>, RemCompare> runQueue;

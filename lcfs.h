@@ -7,7 +7,7 @@
 
 class Lcfs: public Scheduler {
 	public:
-		Lcfs(int algo, std::string fileName, std::string rFileName);
+		Lcfs(int algo, std::string fileName, std::string rFileName, int quantum);
 		void schedule(Process *process, int time);
 		Process* requestLoad(int time);
 		std::stack <Process*> runStack;

@@ -1,6 +1,6 @@
 #include "scheduler.h"
 
-Scheduler::Scheduler(int algo, std::string fileName, std::string rFileName): algorithm(algo), file(fileName), rng(rFileName) {
+Scheduler::Scheduler(int algo, std::string fileName, std::string rFileName, int qt): algorithm(algo), file(fileName), rng(rFileName) {
 	if(!this->file.is_open()) {
 		std::cout << "file not found!" << std::endl;
 		exit(EXIT_FAILURE);
@@ -15,6 +15,7 @@ Scheduler::Scheduler(int algo, std::string fileName, std::string rFileName): alg
 	this->ioTime = 0;
 	this->cpuTime = 0;
 	this->debug = false;
+	this->quantum = qt;
 	int AT = 0,  TC = 0, CB = 0, IO = 0, priority = 0;
 
 	while(getline(this->file, line)) {
@@ -78,7 +79,7 @@ void Scheduler::printEvent(Event *event) {
 			break;
 	}
 	std::cout << event->timeStamp << " " << event->process->PID << " " << event->timeDiff << " " << action;
-	if(event->trans == TO_READY || event->trans == TO_PREEMPT) {std::cout << std::endl;}
+	if(event->trans == TO_READY) {std::cout << std::endl;}
 }
 
 Event* Scheduler::getNextEvent() {
@@ -119,14 +120,14 @@ void Scheduler::simulate() {
 					break;
 				}
 			case TO_PREEMPT:
-				// this->schedule(currentProcess);
-				// CALL_SCHEDULER = true;
+				if(this->debug) {std::cout << " cb = " << currentProcess->currentCB << " rem = " << currentProcess->rem << " prio = " << currentProcess->priority << std::endl;}
+				this->schedule(currentProcess, currentTime);
+				currentProcess = NULL;
 				break;
 			case TO_RUNNING:
 				process->changeState(RUNNING, currentTime);
 				this->block(process, currentTime);
 				currentProcess = process;
-				//this->stop(currentProcess, currentTime);
 				break;
 		}
 		if(!this->eventQueue.empty() && this->eventQueue.top()->timeStamp == currentTime) {
@@ -148,8 +149,22 @@ void Scheduler::simulate() {
 }
 
 void Scheduler::block(Process *process, int time) {
-	int waitTime = std::min(this->rng.get(process->CB), process->rem);
+	int waitTime = 0;
+	if(process->currentCB == 0) {
+		waitTime = std::min(this->rng.get(process->CB), process->rem);
+		process->currentCB = waitTime;
+	}
+	else {
+		waitTime = process->currentCB;
+	}
 	if(this->debug) {std::cout << " cb = " << waitTime << " rem = " << process->rem << " prio = " << process->priority << std::endl;}
+	
+	if(process->currentCB > this->quantum) {
+		Event *event = new Event(process, TO_PREEMPT, time + quantum, quantum, this->eventOrder);
+		this->eventQueue.push(event);
+		this->eventOrder++;
+		return;
+	}
 	Event *event = new Event(process, TO_BLOCK, time + waitTime, waitTime, this->eventOrder);
 	this->eventQueue.push(event);
 	this->eventOrder++;

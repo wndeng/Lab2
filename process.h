@@ -29,6 +29,7 @@ class Process {
         int stateStartTime;
         int rem;
         bool ioFlag;
+        int currentCB;
 };
 
 #endif

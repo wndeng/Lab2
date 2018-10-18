@@ -35,7 +35,7 @@ struct EventCompare {
 
 class Scheduler {
 	public:
-		Scheduler(int algo, std::string fileName, std::string rFileName);
+		Scheduler(int algo, std::string fileName, std::string rFileName, int quantum);
 		Event* getNextEvent();
 		virtual void schedule(Process *process, int time) = 0;
 		void printEvent(Event *event);
@@ -57,6 +57,7 @@ class Scheduler {
 		int ioEnd;
 		int cpuTime;
 		bool debug;
+		int quantum;
 };
 
 #endif
