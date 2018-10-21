@@ -3,6 +3,7 @@
 #include "srtf.h"
 #include "rr.h"
 #include "prio.h"
+#include "preprio.h"
 
 int main(int argc, char *argv[])
 {
@@ -22,7 +23,11 @@ int main(int argc, char *argv[])
     // rr.setDebug();
 	// rr.simulate();
 
-	Prio prio(0, argv[1], argv[2], std::stoi(argv[3]));
-	prio.setDebug();
-	prio.simulate();
+	// Prio prio(0, argv[1], argv[2], std::stoi(argv[3]));
+	// prio.setDebug();
+	// prio.simulate();
+
+	Preprio preprio(0, argv[1], argv[2], std::stoi(argv[3]));
+	preprio.setDebug();
+	preprio.simulate();
 }

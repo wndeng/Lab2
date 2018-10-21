@@ -17,6 +17,7 @@ Scheduler::Scheduler(int algo, std::string fileName, std::string rFileName, int 
 	this->debug = false;
 	this->quantum = qt;
 	int AT = 0,  TC = 0, CB = 0, IO = 0, priority = 0;
+	this->currentProcess = NULL;
 
 	while(getline(this->file, line)) {
 		ss << line;
@@ -94,7 +95,6 @@ Event* Scheduler::getNextEvent() {
 void Scheduler::simulate() {
 
 	Event *event = NULL;
-	Process *currentProcess = NULL;
 	Process *process = NULL;
 	int currentTime = 0;
 
@@ -111,31 +111,32 @@ void Scheduler::simulate() {
 				if(process->rem == 0) {
 					if(this->debug) {std::cout << " Done" << std::endl;}
 					process->FT = currentTime;
-					currentProcess = NULL;
+					this->currentProcess = NULL;
 					break;
 				}
 				else {
 					this->ready(process, currentTime);
-					currentProcess = NULL;
+					this->currentProcess = NULL;
 					break;
 				}
 			case TO_PREEMPT:
-				if(this->debug) {std::cout << " cb = " << currentProcess->currentCB << " rem = " << currentProcess->rem << " prio = " << currentProcess->priority << std::endl;}
-				this->schedule(currentProcess, currentTime);
-				currentProcess = NULL;
+				process->changeState(READY, currentTime);
+				if(this->debug) {std::cout << " cb = " << this->currentProcess->currentCB << " rem = " << this->currentProcess->rem << " prio = " << this->currentProcess->priority << std::endl;}
+				this->schedule(this->currentProcess, currentTime);
+				this->currentProcess = NULL;
 				break;
 			case TO_RUNNING:
 				process->changeState(RUNNING, currentTime);
 				this->block(process, currentTime);
-				currentProcess = process;
+				this->currentProcess = process;
 				break;
 		}
 		if(!this->eventQueue.empty() && this->eventQueue.top()->timeStamp == currentTime) {
 			continue;
 		}
 
-		else if(currentProcess == NULL) {
-			currentProcess = this->requestLoad(currentTime);
+		else if(this->currentProcess == NULL) {
+			this->currentProcess = this->requestLoad(currentTime);
 		}
 
 		delete [] event;

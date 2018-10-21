@@ -13,7 +13,6 @@ Prio::Prio(int algo, std::string fileName, std::string rFileName, int quantum): 
 
 void Prio::schedule(Process *process, int time) {
 	process->changeState(READY, time);
-	std::cout << process->priority << std::endl;
 	if(process->priority >= 0) {
 		this->runQueue->push(process);
 	}

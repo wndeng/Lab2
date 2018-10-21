@@ -58,6 +58,7 @@ class Scheduler {
 		int cpuTime;
 		bool debug;
 		int quantum;
+		Process *currentProcess;
 };
 
 #endif
