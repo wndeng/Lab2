@@ -7,10 +7,10 @@
 
 class Fcfs: public Scheduler {
 	public:
-		Fcfs(int algo, std::string fileName, std::string rFileName, int quantum);
+		Fcfs(std::string fileName, std::string rFileName, int quantum);
 		void schedule(Process *process, int time);
 		Process* requestLoad(int time);
-		std::queue <Process*> runQueue;
+		std::queue <Process*> runQueue; // Ready queue
 		std::string name;
 };
 

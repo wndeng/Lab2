@@ -9,13 +9,13 @@
 
 class Preprio: public Scheduler {
 	public:
-		Preprio(int algo, std::string fileName, std::string rFileName, int quantum);
-		~Preprio();
+		Preprio(std::string fileName, std::string rFileName, int quantum);
+		~Preprio(); // Deallocate memory for run/expired queue
 		void schedule(Process *process, int time);
 		Process* requestLoad(int time);
-		bool validateEventQueue(int time);
-		SpecialQueue *runQueue;
-		SpecialQueue *expiredQueue;
+		bool validateEventQueue(int time); // Check and potentially remove future event of current process should it be preempted
+		SpecialQueue *runQueue; // Run queue
+		SpecialQueue *expiredQueue; // Expired queue
 		std::string name;
 };
 

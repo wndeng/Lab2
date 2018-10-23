@@ -15,13 +15,13 @@ class RandomNumberGenerator {
     public:
 
         RandomNumberGenerator(std::string fileName_);
-        ~RandomNumberGenerator();
-        int get(int burst);
+        ~RandomNumberGenerator(); // Deallocate seed storage
+        int get(int burst); // Get a random number based on prompt
 
     private:
-        int fileNumCount;
-        int *fileArray;
-        int ofs;
+        int fileNumCount; // Stores number of seeds
+        int *fileArray; // Stores the random seeds
+        int ofs; // Current index
 };
 
 #endif

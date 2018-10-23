@@ -5,8 +5,8 @@ Prio::~Prio() {
 	delete expiredQueue;
 }
 
-Prio::Prio(int algo, std::string fileName, std::string rFileName, int quantum): Scheduler(algo, fileName, rFileName, quantum) {
-	std::cout << "PRIO" << std::endl;
+Prio::Prio(std::string fileName, std::string rFileName, int quantum): Scheduler(PRIO, fileName, rFileName, quantum) {
+	std::cout << "PRIO" << " " << quantum << std::endl;
 	this->runQueue = new SpecialQueue();
 	this->expiredQueue = new SpecialQueue();
 };
@@ -25,7 +25,7 @@ void Prio::schedule(Process *process, int time) {
 Process* Prio::requestLoad(int time) {
 	if(this->runQueue->empty()) {
 		if(this->expiredQueue->empty()) {return NULL;}
-		SpecialQueue *temp;
+		SpecialQueue *temp; // Swap ready/expired queue
 		temp = this->runQueue;
 		this->runQueue = this->expiredQueue;
 		this->expiredQueue = temp;

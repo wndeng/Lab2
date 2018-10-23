@@ -1,6 +1,6 @@
 #include "scheduler.h"
 
-Scheduler::Scheduler(int algo, std::string fileName, std::string rFileName, int qt): algorithm(algo), file(fileName), rng(rFileName) {
+Scheduler::Scheduler(Algo algo, std::string fileName, std::string rFileName, int qt): algorithm(algo), file(fileName), rng(rFileName) {
 	if(!this->file.is_open()) {
 		std::cout << "file not found!" << std::endl;
 		exit(EXIT_FAILURE);
@@ -8,7 +8,7 @@ Scheduler::Scheduler(int algo, std::string fileName, std::string rFileName, int 
 
 	std::string line, num;
 	std::stringstream ss;
-	int processCount = 0;
+	int processCount = 0; // Used to assign PID
 	this->eventOrder = 0;
 	this->ioStart = 0;
 	this->ioEnd = 0;
@@ -19,7 +19,7 @@ Scheduler::Scheduler(int algo, std::string fileName, std::string rFileName, int 
 	int AT = 0,  TC = 0, CB = 0, IO = 0, priority = 0;
 	this->currentProcess = NULL;
 
-	while(getline(this->file, line)) {
+	while(getline(this->file, line)) { //Parse input file into new process events
 		ss << line;
 		ss >> num;
 		AT = std::stoi(num);
@@ -41,7 +41,9 @@ Scheduler::Scheduler(int algo, std::string fileName, std::string rFileName, int 
 	}
 }
 
-void Scheduler::setDebug() {
+Scheduler::~Scheduler() {}
+
+void Scheduler::setDebug() { // Enable debug mode
 	this->debug = true;
 }
 
@@ -83,7 +85,7 @@ void Scheduler::printEvent(Event *event) {
 	if(event->trans == TO_READY) {std::cout << std::endl;}
 }
 
-Event* Scheduler::getNextEvent() {
+Event* Scheduler::getNextEvent() { // Get next event from event queue
 	if(this->eventQueue.empty()) {
 		return NULL;
 	}
@@ -92,7 +94,7 @@ Event* Scheduler::getNextEvent() {
 	return event;
 }
 
-void Scheduler::simulate() {
+void Scheduler::simulate() { // Simulate process
 
 	Event *event = NULL;
 	Process *process = NULL;
@@ -132,6 +134,8 @@ void Scheduler::simulate() {
 				break;
 		}
 		if(!this->eventQueue.empty() && this->eventQueue.top()->timeStamp == currentTime) {
+			delete event;
+			event = NULL;
 			continue;
 		}
 
@@ -139,7 +143,7 @@ void Scheduler::simulate() {
 			this->currentProcess = this->requestLoad(currentTime);
 		}
 
-		delete [] event;
+		delete event;
 		event = NULL;
 	}
 
@@ -217,7 +221,7 @@ void Scheduler::printSummary() {
 		}
 		std::cout << str << process->PID << ": " << std::setw(4) << process->AT << " " << std::setw(4) << process->TC << " " << std::setw(4) << process->CB << " " << std::setw(4) << process->IO << " " << std::setw(1) << process->static_priority << " | ";
 		std::cout << std::setw(5) << process->FT << " " << std::setw(5) << (process->FT - process->AT) << " " << std::setw(5) << process->IT << " " << std::setw(5) << process->CW << std::endl;
-		delete [] process;
+		delete process;
 		process = NULL;
 	}
 	std::cout << "SUM: " << this->cpuTime  << " " << std::setprecision(2) << std::fixed << (double)totalTime/this->cpuTime*100 << " " << (double)this->ioTime/this->cpuTime*100 << " " << (double) totalTT/size << " " << (double) totalCW/size << " " << std::setprecision(3) << std::fixed << size/((double)this->cpuTime/100) << std::endl;

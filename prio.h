@@ -5,7 +5,7 @@
 #include "scheduler.h"
 #include "process.h"
 
-class SpecialQueue {
+class SpecialQueue { // Queue wrapper used to implement the required scheduling behavior for priority scheduling, with similarily named functions
 	public:
 
 		void push(Process *process) {
@@ -77,12 +77,12 @@ class SpecialQueue {
 
 class Prio: public Scheduler {
 	public:
-		Prio(int algo, std::string fileName, std::string rFileName, int quantum);
-		~Prio();
+		Prio(std::string fileName, std::string rFileName, int quantum);
+		~Prio(); // Deallocate ready/expired queue
 		void schedule(Process *process, int time);
-		Process* requestLoad(int time);
-		SpecialQueue *runQueue;
-		SpecialQueue *expiredQueue;
+		Process* requestLoad(int time); 
+		SpecialQueue *runQueue; // Ready queue
+		SpecialQueue *expiredQueue; // Expired queue
 		std::string name;
 };
 

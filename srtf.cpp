@@ -1,6 +1,6 @@
 #include "srtf.h"
 
-Srtf::Srtf(int algo, std::string fileName, std::string rFileName, int quantum): Scheduler(algo, fileName, rFileName, quantum) {
+Srtf::Srtf(std::string fileName, std::string rFileName, int quantum): Scheduler(SRTF, fileName, rFileName, quantum) {
 	std::cout << "SRTF" << std::endl;
 };
 

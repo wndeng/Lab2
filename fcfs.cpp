@@ -1,6 +1,6 @@
 #include "fcfs.h"
 
-Fcfs::Fcfs(int algo, std::string fileName, std::string rFileName, int quantum): Scheduler(algo, fileName, rFileName, quantum) {
+Fcfs::Fcfs(std::string fileName, std::string rFileName, int quantum): Scheduler(FCFS, fileName, rFileName, quantum) {
 	std::cout << "FCFS" << std::endl;
 };
 

@@ -1,7 +1,7 @@
 #include "rr.h"
 
-Rr::Rr(int algo, std::string fileName, std::string rFileName, int quantum): Scheduler(algo, fileName, rFileName, quantum) {
-	std::cout << "RR" << std::endl;
+Rr::Rr(std::string fileName, std::string rFileName, int quantum): Scheduler(RR, fileName, rFileName, quantum) {
+	std::cout << "RR" << " " << quantum << std::endl;
 };
 
 void Rr::schedule(Process *process, int time) {

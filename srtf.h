@@ -5,7 +5,7 @@
 #include "scheduler.h"
 #include "process.h"
 
-struct RemCompare {
+struct RemCompare { // Enforce sorting by shortest remaining time and insertion order
 	bool operator()(Process*& lhs, Process*& rhs) {
 		if(lhs->rem < rhs->rem) {
 			return false;
@@ -19,10 +19,10 @@ struct RemCompare {
 
 class Srtf: public Scheduler {
 	public:
-		Srtf(int algo, std::string fileName, std::string rFileName, int quantum);
+		Srtf(std::string fileName, std::string rFileName, int quantum);
 		void schedule(Process *process, int time);
 		Process* requestLoad(int time);
-		std::priority_queue <Process*, std::deque<Process*>, RemCompare> runQueue;
+		std::priority_queue <Process*, std::deque<Process*>, RemCompare> runQueue; // Ready queue
 		std::string name;
 };
 

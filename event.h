@@ -3,7 +3,7 @@
 
 #include "process.h"
 
-typedef enum {
+typedef enum { // Transition types
 	TO_READY,
 	TO_PREEMPT,
 	TO_RUNNING,
@@ -12,12 +12,12 @@ typedef enum {
 
 struct Event {
 	Event(Process *process_, Trans trans_, int time, int timePrev, int order_): process(process_), trans(trans_), timeStamp(time), timeDiff(timePrev), prevState(process_->state), order(order_) {};
-	Process *process;
-	Trans trans;
-	int timeStamp;
-	int timeDiff;
-	State prevState;
-	int order;
+	Process *process; // Process related to event
+	Trans trans; // Transition
+	int timeStamp; // Event time
+	int timeDiff; // Time since last event of this process
+	State prevState; // Previous state of process
+	int order; // Order of this event's insertion into event queue
 };
 
 #endif

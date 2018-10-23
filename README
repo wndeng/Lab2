@@ -1,0 +1,6 @@
+William Deng (wnd211)
+
+This program should be compiled using gcc version 7.3.0
+
+The executable is named all. The last two arguments in command line must be the input file and the rand file, in that order.
+
